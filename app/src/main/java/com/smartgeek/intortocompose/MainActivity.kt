@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,12 +44,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             IntorToComposeTheme {
                 Surface(modifier = Modifier
+                    .statusBarsPadding()
                     .fillMaxSize(),
                     color = Color.Blue) {
                     Column(modifier = Modifier
                         .fillMaxSize()) {
-//                        MyApp()
-//                        CreateCircle()
                         GreetingPreview()
                     }
                 }
@@ -71,6 +72,9 @@ fun MyApp() {
 @Composable
 fun CreateCircle() {
     var toastMessage by remember { mutableStateOf<String?>(null) }
+    var clickCounter by remember { mutableIntStateOf(0) }
+
+    Text(text = clickCounter.toString(), fontSize = 26.sp)
 
     Card(
         modifier = Modifier
@@ -84,8 +88,8 @@ fun CreateCircle() {
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    Log.d("Button Test", "Button Clicked")
-                    toastMessage = "Button Clicked"
+                    clickCounter += 1
+                    Log.d("Click Count", "$clickCounter")
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -108,9 +112,10 @@ fun CreateCircle() {
 fun GreetingPreview() {
     IntorToComposeTheme {
         Column(modifier = Modifier
+            .padding(top = 10.dp)
             .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
-            MyApp()
+//            MyApp()
             CreateCircle()
         }
     }
