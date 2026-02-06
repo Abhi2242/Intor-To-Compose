@@ -6,9 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,22 +54,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun MyApp() {
-    Surface(modifier = Modifier
-        .padding(15.dp),
-        color = Color.Green) {
-        Text(text = "Hello!",
-            textAlign = TextAlign.Center,
-            color = Color.LightGray,
-            fontSize = 42.sp)
-    }
-}
+//@Composable
+//fun MyApp() {
+//    Surface(modifier = Modifier
+//        .padding(15.dp),
+//        color = Color.Green) {
+//        Text(text = "Hello!",
+//            textAlign = TextAlign.Center,
+//            color = Color.LightGray,
+//            fontSize = 42.sp)
+//    }
+//}
 
 @Composable
 fun CreateCircle() {
     var toastMessage by remember { mutableStateOf<String?>(null) }
-    var clickCounter by remember { mutableIntStateOf(0) }
+    var clickCounter by remember { mutableStateOf(0) }
 
     Text(text = clickCounter.toString(), fontSize = 26.sp)
 
@@ -156,7 +153,7 @@ fun CustomToast(
 //@Preview(showBackground = true)
 //@Composable
 //fun GreetingPreview() {
-//    IntorToComposeTheme {
+//    IntroToComposeTheme {
 //        Column {
 //            Greeting("Abhishek")
 //            ShowAge(age = 27)
