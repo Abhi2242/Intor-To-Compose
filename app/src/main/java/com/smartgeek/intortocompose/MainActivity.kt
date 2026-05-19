@@ -8,7 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -92,8 +94,8 @@ fun CreateCircle(messageCount: Int = 0, updatedCount: (Int) -> Unit) {
                 .fillMaxSize()
                 .clickable {
                     updatedCount(messageCount)
-                    toastMessage = "Button Clicked for $messageCount"
-                    toastMessage?.let { messageList.add(toastMessage!!) }
+//                    toastMessage = "Button Clicked for $messageCount"
+//                    toastMessage?.let { messageList.add(toastMessage!!) }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -101,11 +103,17 @@ fun CreateCircle(messageCount: Int = 0, updatedCount: (Int) -> Unit) {
         }
     }
 
-    LazyColumn {
-        items(messageList) { message ->
-            Text(text = message)
-        }
+    Spacer(modifier = Modifier.height(20.dp))
+
+    if (messageCount == 15){
+        Text(text = "Lots of money")
     }
+
+//    LazyColumn {
+//        items(messageList) { message ->
+//            Text(text = message)
+//        }
+//    }
 
     // ✅ Only show toast when message is not null
 //    toastMessage?.let {
