@@ -1,19 +1,18 @@
 package com.smartgeek.intortocompose
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity() {
             IntorToComposeTheme {
                 Surface(modifier = Modifier
                     .fillMaxSize(),
-                    color = Color.Blue) {
+                    color = Color.Blue,){
                     Column(modifier = Modifier
                         .fillMaxSize()) {
 //                        MyApp()
@@ -58,19 +59,25 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
+    val messageCount = remember { mutableIntStateOf(0) }
     Surface(modifier = Modifier
         .padding(15.dp),
         color = Color.Green) {
-        Text(text = "Hello!",
+        Text(text = "$ ${messageCount.intValue}",
             textAlign = TextAlign.Center,
             color = Color.LightGray,
             fontSize = 42.sp)
     }
+
+    CreateCircle(messageCount = messageCount.intValue){
+        messageCount.intValue = it + 1
+    }
 }
 
 @Composable
-fun CreateCircle() {
+fun CreateCircle(messageCount: Int = 0, updatedCount: (Int) -> Unit) {
     var toastMessage by remember { mutableStateOf<String?>(null) }
+    val messageList = remember { mutableStateListOf<String>() }
 
     Card(
         modifier = Modifier
@@ -84,22 +91,29 @@ fun CreateCircle() {
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    Log.d("Button Test", "Button Clicked")
-                    toastMessage = "Button Clicked"
+                    updatedCount(messageCount)
+                    toastMessage = "Button Clicked for $messageCount"
+                    toastMessage?.let { messageList.add(toastMessage!!) }
                 },
             contentAlignment = Alignment.Center
         ) {
-            Text(text = "Tap", color = Color.Black)
+            Text(text = "Tap $messageCount", color = Color.Black)
+        }
+    }
+
+    LazyColumn {
+        items(messageList) { message ->
+            Text(text = message)
         }
     }
 
     // ✅ Only show toast when message is not null
-    toastMessage?.let {
-        CustomToast(
-            message = it,
-            onShown = { toastMessage = null } // ✅ reset state
-        )
-    }
+//    toastMessage?.let {
+//        CustomToast(
+//            message = it,
+//            onShown = { toastMessage = null } // ✅ reset state
+//        )
+//    }
 }
 
 
@@ -111,7 +125,6 @@ fun GreetingPreview() {
             .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
             MyApp()
-            CreateCircle()
         }
     }
 }
