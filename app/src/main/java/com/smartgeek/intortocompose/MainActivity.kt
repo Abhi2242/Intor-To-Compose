@@ -9,7 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -21,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,7 +49,8 @@ class MainActivity : ComponentActivity() {
                     color = Color.Blue) {
                     Column(modifier = Modifier
                         .fillMaxSize()) {
-                        GreetingPreview()
+//                        GreetingPreview()
+                        MyApp()
                     }
                 }
             }
@@ -54,24 +58,19 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-//@Composable
-//fun MyApp() {
-//    Surface(modifier = Modifier
-//        .padding(15.dp),
-//        color = Color.Green) {
-//        Text(text = "Hello!",
-//            textAlign = TextAlign.Center,
-//            color = Color.LightGray,
-//            fontSize = 42.sp)
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun MyApp() {
+    Surface(modifier = Modifier
+        .padding(15.dp),
+        color = Color.White) {
+        GreetingPreview()
+    }
+}
 
 @Composable
-fun CreateCircle() {
+fun CreateCircle(clickCounter: Int = 0, updateCounter :(Int) -> Unit ) {
     var toastMessage by remember { mutableStateOf<String?>(null) }
-    var clickCounter by remember { mutableStateOf(0) }
-
-    Text(text = clickCounter.toString(), fontSize = 26.sp)
 
     Card(
         modifier = Modifier
@@ -85,8 +84,8 @@ fun CreateCircle() {
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    clickCounter += 1
-                    Log.d("Click Count", "$clickCounter")
+                    updateCounter(clickCounter)
+                    Log.d("Click Count", "${clickCounter + 1}")
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -103,17 +102,23 @@ fun CreateCircle() {
     }
 }
 
-
-@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
+    var clickCounter by remember { mutableIntStateOf(0) }
+
     IntorToComposeTheme {
         Column(modifier = Modifier
             .padding(top = 10.dp)
             .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
 //            MyApp()
-            CreateCircle()
+            Text(text = clickCounter.toString(), fontSize = 26.sp)
+            
+            Spacer(modifier = Modifier.height(20.dp))
+
+            CreateCircle (clickCounter = clickCounter) {
+                clickCounter = it + 1
+            }
         }
     }
 }
